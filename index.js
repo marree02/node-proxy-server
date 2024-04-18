@@ -23,6 +23,12 @@ app.post('/webhook', (req, res) => {
     console.log('Received a webhook:', req.body);
     res.sendStatus(200);
 });
+app.get('/authcallback', (req, res) => {
+    const code = req.query.code;
+    const redirectUri = `https://releyeab-e-dev-ed.develop.my.salesforce.com/services/authcallback/strava?code=${code}`;
+
+    res.redirect(redirectUri);
+});
 
 const port = process.env.PORT || 3000;
 app.listen(port, () => console.log(`Server listening on port ${port}`));
