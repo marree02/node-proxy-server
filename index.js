@@ -21,6 +21,34 @@ app.use(express.json());
 
 app.post('/webhook', (req, res) => {
     console.log('Received a webhook:', req.body);
+
+    // The object containing the event details is in req.body
+    const event = req.body;
+
+    // The type of event is in event.object_type (e.g., "activity", "athlete")
+    const eventType = event.object_type;
+
+    // The action performed on the object is in event.aspect_type (e.g., "create", "update", "delete")
+    const eventAction = event.aspect_type;
+
+    // You can add logic to handle different types of events
+    if (eventType === 'activity') {
+        if (eventAction === 'create') {
+            console.log('A new activity was created:', event.object_id);
+            // Add your logic to handle a new activity here
+        } else if (eventAction === 'update') {
+            console.log('An activity was updated:', event.object_id);
+            // Add your logic to handle an updated activity here
+        } else if (eventAction === 'delete') {
+            console.log('An activity was deleted:', event.object_id);
+            // Add your logic to handle a deleted activity here
+        }
+    } else if (eventType === 'athlete') {
+        console.log('An athlete event occurred:', event.object_id);
+        // Add your logic to handle athlete events here
+    }
+
+    // Always respond with a 200 status code to acknowledge receipt of the event
     res.sendStatus(200);
 });
 
