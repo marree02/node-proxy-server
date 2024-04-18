@@ -23,6 +23,12 @@ app.post('/webhook', (req, res) => {
     console.log('Received a webhook:', req.body);
     res.sendStatus(200);
 });
+
+app.get('/webhook', (req, res) => {
+    const challenge = req.query['hub.challenge'];
+    res.json({ 'hub.challenge': challenge });
+});
+
 app.get('/authcallback', (req, res) => {
     const code = req.query.code;
     const redirectUri = `https://releyeab-e-dev-ed.develop.my.salesforce.com/services/authcallback/strava?code=${code}`;
