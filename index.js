@@ -35,6 +35,10 @@ app.get('/authcallback', (req, res) => {
 
     res.redirect(redirectUri);
 });
+app.get('/test', (req, res) => {
+    console.log('Test route hit');
+    res.send('Test route hit');
+});
 
 const port = process.env.PORT || 3000;
 app.listen(port, () => console.log(`Server listening on port ${port}`));
