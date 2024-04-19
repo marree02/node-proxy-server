@@ -67,18 +67,22 @@ app.get('/test', (req, res) => {
 const port = process.env.PORT || 3000;
 app.listen(port, () => console.log(`Server listening on port ${port}`)); */
 const express = require('express');
-const request = require('request');
+const fetch = require('node-fetch');
 
 const app = express();
 
-app.all('*', (req, res) => {
+app.all('*', async (req, res) => {
     const targetURL = 'https://releyeab-e-dev-ed.develop.my.salesforce.com/services/authcallback/strava' + req.originalUrl;
-    request({ url: targetURL, method: req.method }, (error, response, body) => {
-        if (error || response.statusCode !== 200) {
+    try {
+        const response = await fetch(targetURL, { method: req.method });
+        if (!response.ok) {
             return res.sendStatus(500);
         }
+        const body = await response.text();
         res.send(body);
-    });
+    } catch (error) {
+        return res.sendStatus(500);
+    }
 });
 
 app.listen(process.env.PORT || 3000);
