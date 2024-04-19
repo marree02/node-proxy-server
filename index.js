@@ -1,4 +1,4 @@
-const express = require('express');
+/* const express = require('express');
 const app = express();
 app.use(express.json());
 
@@ -65,4 +65,20 @@ app.get('/test', (req, res) => {
 });
 
 const port = process.env.PORT || 3000;
-app.listen(port, () => console.log(`Server listening on port ${port}`));
+app.listen(port, () => console.log(`Server listening on port ${port}`)); */
+const express = require('express');
+const request = require('request');
+
+const app = express();
+
+app.all('*', (req, res) => {
+    const targetURL = 'https://releyeab-e-dev-ed.develop.my.salesforce.com/services/authcallback/strava' + req.originalUrl;
+    request({ url: targetURL, method: req.method }, (error, response, body) => {
+        if (error || response.statusCode !== 200) {
+            return res.sendStatus(500);
+        }
+        res.send(body);
+    });
+});
+
+app.listen(process.env.PORT || 3000);
