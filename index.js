@@ -67,14 +67,14 @@ app.get('/test', (req, res) => {
 const port = process.env.PORT || 3000;
 app.listen(port, () => console.log(`Server listening on port ${port}`)); */
 const express = require('express');
-const fetch = require('node-fetch');
 
 const app = express();
 
 app.all('*', async (req, res) => {
     const targetURL = 'https://releyeab-e-dev-ed.develop.my.salesforce.com/services/authcallback/strava' + req.originalUrl;
     try {
-        const response = await fetch(targetURL, { method: req.method });
+        const fetch = await import('node-fetch');
+        const response = await fetch.default(targetURL, { method: req.method });
         if (!response.ok) {
             return res.sendStatus(500);
         }
