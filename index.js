@@ -84,5 +84,23 @@ app.all('*', async (req, res) => {
         return res.sendStatus(500);
     }
 });
+app.get('/', (req, res) => {
+    const VERIFY_TOKEN = "STRAVA";
+    let mode = req.query['hub.mode'];
+    let token = req.query['hub.verify_token'];
+    let challenge = req.query['hub.challenge'];
+
+    if (mode && token) {
+        if (mode === 'subscribe' && token === VERIFY_TOKEN) {
+            console.log('WEBHOOK_VERIFIED');
+            res.json({ "hub.challenge": challenge });
+            res.sendStatus(200);
+        } else {
+            res.sendStatus(403);
+        }
+    } else {
+        res.sendStatus(400);
+    }
+});
 
 app.listen(process.env.PORT || 3000);
