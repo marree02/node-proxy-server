@@ -35,7 +35,7 @@ app.post('/', (req, res) => {
     res.sendStatus(200);
 });
 
-app.get('/webhook', (req, res) => {
+app.get('/', (req, res) => {
     const VERIFY_TOKEN = "STRAVA";
     let mode = req.query['hub.mode'];
     let token = req.query['hub.verify_token'];
